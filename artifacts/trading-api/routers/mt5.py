@@ -35,7 +35,7 @@ class OHLCCandle(BaseModel):
 
 class MT5PushPayload(BaseModel):
     symbol: str      # e.g. "USD/JPY"
-    interval: str    # "5m" | "15m" | "1h" | "4h"
+    interval: str    # Includes "1m"; accepted values are defined by VALID_INTERVALS
     candles: list[OHLCCandle]
 
 class SymbolSpecsPayload(BaseModel):

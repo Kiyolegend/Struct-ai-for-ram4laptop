@@ -14,7 +14,7 @@ from .zigzag_engine import SwingPoint
 
 
 def _cluster_pips(price: float, timeframe: str = "1h") -> float:
-    tf_scale = {"5m": 1.0, "15m": 1.5, "1h": 3.0, "4h": 8.0, "d1": 20.0, "w1": 50.0}
+    tf_scale = {"1m": 0.5, "5m": 1.0, "15m": 1.5, "1h": 3.0, "4h": 8.0, "d1": 20.0, "w1": 50.0}
     scale = tf_scale.get(timeframe, 1.0)
     if price > 10_000: return min(200.0 * scale, 3000.0)
     if price > 500:    return 30.0  * scale
@@ -74,7 +74,7 @@ def detect_zones(
     zone_width        = _zone_width_pips(ref) * pip
 
     # ── Timeframe weights ────────────────────────────────────────────────────
-    tf_strength = {"w1": 5, "d1": 4, "4h": 3, "1h": 2, "15m": 1, "5m": 0}
+    tf_strength = {"w1": 5, "d1": 4, "4h": 3, "1h": 2, "15m": 1, "5m": 0, "1m": 0}
     base_strength = tf_strength.get(timeframe, 1)
 
     # Pre-compute df time index once (avoids repeated conversion inside loop)
@@ -313,11 +313,11 @@ def _compute_departure(cluster, pip, df, df_time_int):
 # Per-asset departure ceilings — "how many pips = full 25pts on this timeframe?"
 # Keyed by asset_class() string so the entire engine shares one classification.
 _MAX_DEP: dict[str, dict[str, int]] = {
-    "crypto": {"w1": 6000, "d1": 2000, "4h": 600, "1h": 250, "15m": 100, "5m": 50},
-    "metal":  {"w1": 1500, "d1":  500, "4h": 150, "1h":  70, "15m":  30, "5m": 15},
-    "index":  {"w1":  300, "d1":   80, "4h":  30, "1h":  15, "15m":   8, "5m":  5},
-    "jpy":    {"w1":  300, "d1":   80, "4h":  30, "1h":  15, "15m":   8, "5m":  5},
-    "fx":     {"w1":  300, "d1":   80, "4h":  30, "1h":  15, "15m":   8, "5m":  5},
+    "crypto": {"w1": 6000, "d1": 2000, "4h": 600, "1h": 250, "15m": 100, "5m": 50, "1m": 25},
+    "metal":  {"w1": 1500, "d1":  500, "4h": 150, "1h":  70, "15m":  30, "5m": 15, "1m": 8},
+    "index":  {"w1":  300, "d1":   80, "4h":  30, "1h":  15, "15m":   8, "5m":  5, "1m": 3},
+    "jpy":    {"w1":  300, "d1":   80, "4h":  30, "1h":  15, "15m":   8, "5m":  5, "1m": 3},
+    "fx":     {"w1":  300, "d1":   80, "4h":  30, "1h":  15, "15m":   8, "5m":  5, "1m": 3},
 }
 
 
@@ -334,7 +334,7 @@ def _compute_quality(timeframe, departure_pips, status, touches, retest_count, c
       Retest penalty    : up to -15 pts
     """
     # Timeframe weight
-    tf_pts = {"w1": 25, "d1": 20, "4h": 15, "1h": 10, "15m": 5, "5m": 0}
+    tf_pts = {"w1": 25, "d1": 20, "4h": 15, "1h": 10, "15m": 5, "5m": 0, "1m": 0}
     tfw = tf_pts.get(timeframe, 5)
 
     # Departure strength — ceiling from shared _MAX_DEP table, keyed by asset class

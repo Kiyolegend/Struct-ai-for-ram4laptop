@@ -15,7 +15,7 @@ from typing import TypedDict
 from .pip_utils import pip_size as _pip_size
 FRACTAL_N = 5  # bars on each side to confirm a swing point
 TF_FRACTAL_N: dict[str, int] = {
-    "w1": 2, "d1": 3, "4h": 3, "1h": 3, "15m": 5, "5m": 5
+    "1m": 5, "w1": 2, "d1": 3, "4h": 3, "1h": 3, "15m": 5, "5m": 5
 }
 
 
@@ -93,11 +93,11 @@ def detect_swings(df: pd.DataFrame, fractal_n: int = FRACTAL_N, timeframe: str =
 
         _tf = timeframe.lower()
         if p > 10_000:   # BTC
-            min_pips = {"w1": 2000, "d1": 1000, "4h": 500, "1h": 200, "15m": 100, "5m": 50}.get(_tf, 200)
+            min_pips = {"w1": 2000, "d1": 1000, "4h": 500, "1h": 200, "15m": 100, "5m": 50, "1m": 30}.get(_tf, 200)
         elif p > 500:    # Gold
-            min_pips = {"w1": 800, "d1": 400, "4h": 150, "1h": 50, "15m": 30, "5m": 15}.get(_tf, 50)
+            min_pips = {"w1": 800, "d1": 400, "4h": 150, "1h": 50, "15m": 30, "5m": 15, "1m": 10}.get(_tf, 50)
         else:            # FX
-            min_pips = {"w1": 100, "d1": 50, "4h": 20, "1h": 10, "15m": 5, "5m": 3}.get(_tf, 5)
+            min_pips = {"w1": 100, "d1": 50, "4h": 20, "1h": 10, "15m": 5, "5m": 3, "1m": 2}.get(_tf, 5)
         min_move = min_pips * pip
         sized = [alternating[0]]
         for pt in alternating[1:]:

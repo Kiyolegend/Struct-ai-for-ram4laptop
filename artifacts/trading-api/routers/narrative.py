@@ -83,8 +83,8 @@ async def _analyse_timeframe(symbol: str, interval: str, outputsize: int) -> dic
         swings        = detect_swings(df, fractal_n=fractal_n, timeframe=interval)
         labels        = classify_structure(swings)
         trend         = detect_trend(labels)
-        bos           = detect_bos(df, swings, labels, trend["trend"])
-        choch         = detect_choch(df, swings, labels, trend["trend"], fractal_n=fractal_n)
+        bos           = detect_bos(df, swings, labels, trend["trend"], lookback_hours=2 if interval == "1m" else 48)
+        choch         = detect_choch(df, swings, labels, trend["trend"], lookback_hours=2 if interval == "1m" else 24, fractal_n=fractal_n)
         zones         = detect_zones(swings, interval, float(df["close"].iloc[-1]))
 
         labels_out: list[dict] = []

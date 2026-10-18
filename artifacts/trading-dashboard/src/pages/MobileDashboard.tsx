@@ -9,6 +9,7 @@ import { useTradingAnalysis, useSRLevels, useMTFBias, useSessions, useBrokerTime
 import { Loader2, AlertTriangle, RefreshCw, Moon, LineChart, ListOrdered, Newspaper, LayoutGrid } from "lucide-react";
 
 const MARKET_CLOSED_THRESHOLDS: Record<string, number> = {
+  "1m":  3 * 60,
   "5m":  10 * 60,
   "15m": 20 * 60,
   "1h":  90 * 60,
@@ -18,6 +19,7 @@ const MARKET_CLOSED_THRESHOLDS: Record<string, number> = {
 };
 
 const CANDLE_LIMITS: Record<string, number> = {
+  "1m":  400,
   "5m":  2000,
   "15m": 2000,
   "1h":  2000,

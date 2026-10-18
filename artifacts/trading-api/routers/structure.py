@@ -48,13 +48,13 @@ async def _get_full_analysis(symbol: str, interval: str, outputsize: int, includ
     trend_data["last_high_price"] = last_high_price
     trend_data["last_low_price"]  = last_low_price
     trend = trend_data["trend"]
-    _bos_hours   = {"5m": 8, "15m": 48, "1h": 72, "4h": 336, "d1": 8760, "w1": 87600}.get(interval, 48)
+    _bos_hours   = {"1m": 2, "5m": 8, "15m": 48, "1h": 72, "4h": 336, "d1": 8760, "w1": 87600}.get(interval, 48)
     bos_events = detect_bos(df, swings, structure_labels, trend_data["trend"], lookback_hours=_bos_hours, fractal_n=tf_fractal_n)
-    _choch_hours = {"5m": 8, "15m": 24, "1h": 72, "4h": 336, "d1": 4320, "w1": 43800}.get(interval, 24)
+    _choch_hours = {"1m": 2, "5m": 8, "15m": 24, "1h": 72, "4h": 336, "d1": 4320, "w1": 43800}.get(interval, 24)
     choch_events = detect_choch(df, swings, structure_labels, trend, lookback_hours=_choch_hours, fractal_n=tf_fractal_n)
     current_price = float(df["close"].iloc[-1]) if len(df) > 0 else None
     latest_time   = int(df["time"].astype("datetime64[s]").astype("int64").iloc[-1]) if len(df) > 0 else None
-    _bar_secs     = {"5m": 300, "15m": 900, "1h": 3600, "4h": 14400, "d1": 86400, "w1": 604800}.get(interval, 900)
+    _bar_secs     = {"1m": 60, "5m": 300, "15m": 900, "1h": 3600, "4h": 14400, "d1": 86400, "w1": 604800}.get(interval, 900)
     trendlines    = compute_trendlines(structure_labels, current_price=current_price, latest_time=latest_time, bar_seconds=_bar_secs)
     zigzag_lines  = swings_to_zigzag_lines(swings)
     zones         = detect_zones(swings, interval, current_price, df=df)
@@ -134,7 +134,7 @@ async def get_bos(
         swings = detect_swings(df, fractal_n=tf_fractal_n, timeframe=interval)
         structure_labels = classify_structure(swings)
         trend_data = detect_trend(structure_labels)
-        _bos_hours = {"5m": 8, "15m": 48, "1h": 72, "4h": 336, "d1": 8760, "w1": 87600}.get(interval, 48)
+        _bos_hours = {"1m": 2, "5m": 8, "15m": 48, "1h": 72, "4h": 336, "d1": 8760, "w1": 87600}.get(interval, 48)
         bos_events = detect_bos(df, swings, structure_labels, trend_data["trend"], lookback_hours=_bos_hours, fractal_n=tf_fractal_n)
         return {"symbol": symbol, "interval": interval, "bos": bos_events}
     except ValueError as e:
@@ -154,7 +154,7 @@ async def get_choch(
         swings = detect_swings(df, fractal_n=tf_fractal_n, timeframe=interval)
         structure_labels = classify_structure(swings)
         trend_data = detect_trend(structure_labels)
-        _choch_hours = {"5m": 8, "15m": 24, "1h": 72, "4h": 336, "d1": 4320, "w1": 43800}.get(interval, 24)
+        _choch_hours = {"1m": 2, "5m": 8, "15m": 24, "1h": 72, "4h": 336, "d1": 4320, "w1": 43800}.get(interval, 24)
         choch_events = detect_choch(df, swings, structure_labels, trend_data["trend"], lookback_hours=_choch_hours, fractal_n=tf_fractal_n)
         return {"symbol": symbol, "interval": interval, "choch": choch_events}
     except ValueError as e:

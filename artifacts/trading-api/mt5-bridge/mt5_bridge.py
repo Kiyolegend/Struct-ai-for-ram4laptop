@@ -95,6 +95,7 @@ SYMBOLS: list[dict] = []
 
 
 CANDLE_COUNT = {
+    "1m": 400,
     "5m": 400,
     "15m": 400,
     "1h": 300,
@@ -112,6 +113,7 @@ _slow_tf_lock = _threading.Lock()
 _active_list_error_reported = False
 
 TIMEFRAME_MAP = {
+    "1m": mt5.TIMEFRAME_M1,
     "5m": mt5.TIMEFRAME_M5,
     "15m": mt5.TIMEFRAME_M15,
     "1h": mt5.TIMEFRAME_H1,
