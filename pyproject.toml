@@ -1,7 +1,7 @@
 [project]
-name = "repl-nix-workspace"
+name = "struct-ai"
 version = "0.1.0"
-description = "Add your description here"
+description = "STRUCT.ai trading dashboard and MT5 analysis backend"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.135.2",

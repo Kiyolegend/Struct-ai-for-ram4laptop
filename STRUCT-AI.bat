@@ -67,13 +67,13 @@ if errorlevel 1 goto dashboard_build_failed
 echo       Build complete.
 echo.
 echo [4/5] Starting STRUCT.ai API (localhost:8001)...
-start "STRUCT.ai - Trading API" cmd /k "cd /d "%ROOT%\artifacts\trading-api" && python main.py"
+start "STRUCT.ai - Trading API" cmd /k "cd /d "%ROOT%\apps\trading-backend" && python main.py"
 timeout /t 4 /nobreak >nul
 
 echo [5/5] Starting Dashboard + MT5 Bridge...
 start "STRUCT.ai - Dashboard" cmd /k "set PATH=%APPDATA%\npm;%PATH% && cd /d "%ROOT%" && pnpm --filter @workspace/trading-dashboard run serve"
 timeout /t 6 /nobreak >nul
-start "STRUCT.ai - MT5 Bridge" cmd /k "python "%ROOT%\artifacts\trading-api\mt5-bridge\mt5_bridge.py""
+start "STRUCT.ai - MT5 Bridge" cmd /k "python "%ROOT%\apps\trading-backend\mt5-bridge\mt5_bridge.py""
 
 timeout /t 3 /nobreak >nul
 start "" "%ProgramFiles%\Google\Chrome\Application\chrome.exe" "http://localhost:5173"
